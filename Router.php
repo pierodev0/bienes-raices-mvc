@@ -32,7 +32,11 @@ class Router
       }
 
       if ($fn) {
-         call_user_func($fn, $this);
+         if(is_callable($fn)) {
+            call_user_func($fn, $this);
+         } else {
+            echo "No existe el metodo " . $fn[1] . " en el controlador : " . $fn[0];
+         }
       } else {
          echo "Pagina no encontrada";
       }
