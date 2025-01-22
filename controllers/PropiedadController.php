@@ -72,8 +72,47 @@ class PropiedadController
 
 
 
-    public static function  update()
+    public static function  update(Router $router)
     {
-        echo "Actualizar Propiedad";
+       $id = validarORedireccionar('/admin');
+       $propiedad = Propiedad::find($id);
+       $vendedores = Vendedor::all();
+       $errores = Propiedad::getErrores();
+     
+       if(Request::isMethod('post')) {
+        $propiedad->sincronizar($_POST['propiedad']);
+
+        //Asignar files hacia una variable
+        $uploadedImage = $_FILES['propiedad']['tmp_name']['imagen'];
+      
+        $errores = $propiedad->validar();
+      
+        if ($uploadedImage) { 
+          //Generar nombre unico
+          $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
+      
+          $manager = new Image(Driver::class);
+          $imagen = $manager->read($uploadedImage)->cover(800, 600);
+          
+          $propiedad->setImagen($nombreImagen);
+        }
+      
+        if (empty($errores)) {     
+      
+          //Guardar la imagen el servidor
+          if ($uploadedImage) {
+            $imagen->save(public_path("imagenes/{$nombreImagen}"));
+          }
+      
+          $resultado = $propiedad->guardar();
+      
+          if ($resultado) {
+            //Redireccionar al usuario
+            header('Location: /admin?resultado=2');
+          }
+        }
+	  }
+
+       $router->render('propiedades/actualizar', compact('propiedad', 'vendedores', 'errores'));
     }
 }

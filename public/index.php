@@ -11,6 +11,7 @@ $router->get("/admin",[PropiedadController::class,"index"]);
 $router->get("/propiedades/crear",[PropiedadController::class,'create']);
 $router->post("/propiedades/crear",[PropiedadController::class,'create']);
 $router->get("/propiedades/actualizar",[PropiedadController::class,'update']);
+$router->post("/propiedades/actualizar",[PropiedadController::class,'update']);
 
 
 $router->comprobarRutas();
