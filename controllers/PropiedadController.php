@@ -18,9 +18,9 @@ class PropiedadController
         $propiedades = Propiedad::all();
         $vendedores = Vendedor::all();
 
-         //Mostrar mensaje condicional
-         $resultado = $_GET["resultado"] ?? null;
-         $mensaje = mostrarNotificacion(intval($resultado));
+        //Mostrar mensaje condicional
+        $resultado = $_GET["resultado"] ?? null;
+        $mensaje = mostrarNotificacion(intval($resultado));
 
         $router->render("propiedades/admin", compact('propiedades', 'vendedores', 'mensaje'));
     }
@@ -29,7 +29,7 @@ class PropiedadController
     {
         $vendedores = Vendedor::all();
         $propiedad = new Propiedad;
-        $errores = Propiedad::getErrores();       
+        $errores = Propiedad::getErrores();
 
         if (Request::isMethod('post')) {
             $propiedad = new Propiedad($_POST['propiedad']);
@@ -59,7 +59,7 @@ class PropiedadController
 
                 if ($resultado) {
                     //Redireccionar al usuario
-                    header('Location: /admin?resultado=1');
+                    redirect('/admin?resultado=1');
                 }
             }
         }
@@ -74,45 +74,65 @@ class PropiedadController
 
     public static function  update(Router $router)
     {
-       $id = validarORedireccionar('/admin');
-       $propiedad = Propiedad::find($id);
-       $vendedores = Vendedor::all();
-       $errores = Propiedad::getErrores();
-     
-       if(Request::isMethod('post')) {
-        $propiedad->sincronizar($_POST['propiedad']);
+        $id = validarORedireccionar($_GET['id'], '/admin');
 
-        //Asignar files hacia una variable
-        $uploadedImage = $_FILES['propiedad']['tmp_name']['imagen'];
-      
-        $errores = $propiedad->validar();
-      
-        if ($uploadedImage) { 
-          //Generar nombre unico
-          $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
-      
-          $manager = new Image(Driver::class);
-          $imagen = $manager->read($uploadedImage)->cover(800, 600);
-          
-          $propiedad->setImagen($nombreImagen);
-        }
-      
-        if (empty($errores)) {     
-      
-          //Guardar la imagen el servidor
-          if ($uploadedImage) {
-            $imagen->save(public_path("imagenes/{$nombreImagen}"));
-          }
-      
-          $resultado = $propiedad->guardar();
-      
-          if ($resultado) {
-            //Redireccionar al usuario
-            header('Location: /admin?resultado=2');
-          }
-        }
-	  }
 
-       $router->render('propiedades/actualizar', compact('propiedad', 'vendedores', 'errores'));
+        $propiedad = Propiedad::find($id);
+        $vendedores = Vendedor::all();
+        $errores = Propiedad::getErrores();
+
+        if (Request::isMethod('post')) {
+            $propiedad->sincronizar($_POST['propiedad']);
+
+            //Asignar files hacia una variable
+            $uploadedImage = $_FILES['propiedad']['tmp_name']['imagen'];
+
+            $errores = $propiedad->validar();
+
+            if ($uploadedImage) {
+                //Generar nombre unico
+                $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
+
+                $manager = new Image(Driver::class);
+                $imagen = $manager->read($uploadedImage)->cover(800, 600);
+
+                $propiedad->setImagen($nombreImagen);
+            }
+
+            if (empty($errores)) {
+
+                //Guardar la imagen el servidor
+                if ($uploadedImage) {
+                    $imagen->save(public_path("imagenes/{$nombreImagen}"));
+                }
+
+                $resultado = $propiedad->guardar();
+
+                if ($resultado) {
+                    //Redireccionar al usuario
+                    redirect('/admin?resultado=2');
+                }
+            }
+        }
+
+        $router->render('propiedades/actualizar', compact('propiedad', 'vendedores', 'errores'));
+    }
+
+    public static function  delete()
+    {
+        if (Request::isMethod('post')) {
+            $id = validarORedireccionar($_POST['id'], '/admin');
+
+            $tipo = $_POST['tipo'];
+            if (validarTipoContenido($tipo)) {
+
+                $propiedad = Propiedad::find($id);
+                $resultado = $propiedad->eliminar();
+
+                if ($resultado) {
+                    redirect('/admin?resultado=3');
+                }
+            }
+        }
     }
 }

@@ -115,9 +115,9 @@ class ActiveRecord
 
     public function borrarImagen()
     {
-        $fileExist = file_exists(CARPETA_IMAGENES . $this->imagen);
+        $fileExist = file_exists(public_path("imagenes/") . $this->imagen);
         if ($fileExist) {
-            unlink(CARPETA_IMAGENES . $this->imagen);
+            unlink(public_path("imagenes/") . $this->imagen);
         }
     }
 

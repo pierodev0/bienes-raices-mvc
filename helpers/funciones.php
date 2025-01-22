@@ -96,9 +96,33 @@ function dump($mensaje, $modo = 0)
 }
 
 
-function validarORedireccionar($url)
+function validarORedireccionar($parametro, $urlRedireccion): int
 {
-  $id = filter_var($_GET["id"], FILTER_VALIDATE_INT);
-  if (!$id) header("Location: $url");
-  return $id;
+    // Validar si el parámetro existe y es un entero válido
+    $id = filter_var($parametro, FILTER_VALIDATE_INT);
+    
+    if ($id === false) {
+        // Redirigir si el ID no es válido
+        header("Location: $urlRedireccion");
+        exit;
+    }
+
+    return $id;
 }
+
+function redirect($url, $statusCode = 302) {
+  if (!filter_var($url, FILTER_VALIDATE_URL) && !filter_var($url, FILTER_VALIDATE_DOMAIN)) {
+      throw new InvalidArgumentException("The provided URL is not valid.");
+  }
+
+  // Set the HTTP status code
+  http_response_code($statusCode);
+
+  // Add the Location header for redirection
+  header("Location: $url");
+
+  // Stop further execution of the script
+  exit();
+}
+
+
