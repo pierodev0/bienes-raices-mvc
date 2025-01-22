@@ -1,0 +1,5 @@
+node_modules/
+public/build/
+pnpm-lock.yaml
+php_error_log
+vendor/

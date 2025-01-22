@@ -1,0 +1,17 @@
+{
+    "name": "piero/bienes-raices-poo",
+    "authors": [
+        {
+            "name": "Piero Dev",
+            "email": "pierodev21@gmail.com"
+        }
+    ],
+    "require": {
+        "intervention/image": "^3.11"
+    },
+    "autoload": {
+        "psr-4": {
+            "Model\\":"./models"
+        }
+    }
+}

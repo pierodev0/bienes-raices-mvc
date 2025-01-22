@@ -1,0 +1,59 @@
+.seccion {
+    margin-top: calc($separacion / 2);
+    margin-bottom: calc($separacion / 2);
+}
+.contenido-centrado {
+    max-width: 80rem;
+}
+
+.alinear-derecha {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.flex {
+    display: flex;
+}
+
+.gap-1 {
+    gap: 0.25rem; /* 4px */
+}
+
+.gap-2 {
+    gap: 0.5rem; /* 8px */
+}
+
+.gap-4 {
+    gap: 1rem; /* 16px */
+}
+
+.flex-col{
+    flex-direction: column;
+}
+.justify-center {
+    justify-content: center;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.space-y-1 > * + *{
+    margin-top: 0.25rem; /* 4px */
+}
+
+.space-y-2 > * + *{
+    margin-top: 0.5rem; /* 8px */
+}
+
+.space-y-3 > * + *{
+    margin-top: 0.75rem; /* 12px */
+}
+
+.space-y-4 > * + *{
+    margin-top: 1rem; /* 16px */
+}
