@@ -1,1 +1,1 @@
-<h1>Dsde la vista admin</h1>
+<h1>Dsde la vista admin <?= $mensaje ?></h1>
