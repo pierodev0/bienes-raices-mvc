@@ -19,7 +19,7 @@ class PaginasController
 
     public static function nosotros(Router $router)
     {
-        echo "Desde nosotros";
+        $router->render("paginas/nosotros");
     }
 
     public static function propiedades(Router $router)
