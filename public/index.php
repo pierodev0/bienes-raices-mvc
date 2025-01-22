@@ -28,7 +28,7 @@ $router->post("/vendedores/eliminar",[VendedorController::class,'delete']);
 //Zona public
 $router->get("/",[PaginasController::class,'index']);
 $router->get("/nosotros",[PaginasController::class,'nosotros']);
-$router->get("/propiedades",[PaginasController::class,'propiedades']);
+$router->get("/anuncios",[PaginasController::class,'propiedades']);
 $router->get("/propiedad",[PaginasController::class,'propiedad']);
 $router->get("/blog",[PaginasController::class,'blog']);
 $router->get("/entrada",[PaginasController::class,'entrada']);

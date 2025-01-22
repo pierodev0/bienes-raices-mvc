@@ -29,7 +29,7 @@
                     </li>
                 </ul>
 
-                <a href="anuncio?id=<?= $propiedad->id ?>" class="boton-amarillo-block">
+                <a href="propiedad?id=<?= $propiedad->id ?>" class="boton-amarillo-block">
                     Ver Propiedad
                 </a>
             </div><!--.contenido-anuncio-->
