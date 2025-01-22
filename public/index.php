@@ -9,6 +9,7 @@ require_once __DIR__ . '/../includes/app.php';
 $router = new Router();
 $router->get("/admin",[PropiedadController::class,"index"]);
 $router->get("/propiedades/crear",[PropiedadController::class,'create']);
+$router->post("/propiedades",[PropiedadController::class,'store']);
 $router->get("/propiedades/actualizar",[PropiedadController::class,'update']);
 
 

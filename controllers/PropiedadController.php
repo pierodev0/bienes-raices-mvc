@@ -21,7 +21,11 @@ class PropiedadController
     {   
         $vendedores = Vendedor::all();
         $propiedad = new Propiedad;
-       $router->render("propiedades/crear",compact('vendedores','propiedad'));
+        $router->render("propiedades/crear",compact('vendedores','propiedad'));
+    }
+
+    public static function store(Router $router){
+        echo "Crear propiedad";
     }
 
     public static function  update()
