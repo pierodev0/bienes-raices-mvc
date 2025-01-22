@@ -39,9 +39,9 @@ class VendedorController
 
         //Obtener datos del vendedor
         $vendedor = Vendedor::find($id);
-        
+
         //Si no existe el vendedor redireccionar
-        if(!$vendedor) redirect("/admin");
+        if (!$vendedor) redirect("/admin");
 
         $errores = Vendedor::getErrores();
 
@@ -56,7 +56,7 @@ class VendedorController
             if (empty($errores)) {
                 $resultado = $vendedor->guardar();
                 if ($resultado) {
-                   redirect('/admin?resultado=2');
+                    redirect('/admin?resultado=2');
                 }
             }
         }
@@ -66,6 +66,19 @@ class VendedorController
 
     public static function  delete()
     {
-        echo "eliminando un vendedor";
+        if (Request::isMethod('post')) {
+            $id = validarORedireccionar($_POST['id'], '/admin');
+
+            $tipo = $_POST['tipo'];
+
+            if ($tipo === 'vendedor') {
+                $vendedor = Vendedor::find($id);
+                $resultado = $vendedor->eliminar();
+
+                if($resultado) {
+                    redirect("/admin?resultado=3");
+                }
+            }
+        }
     }
 }

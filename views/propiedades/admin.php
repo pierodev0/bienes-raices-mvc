@@ -50,7 +50,7 @@
                     <td><?= $vendedor->nombre . " " . $vendedor->apellido ?></td>
                     <td><?= $vendedor->telefono ?></td>
                     <td class="space-y-2">
-                        <form method="POST" class="w-100">
+                        <form method="POST" class="w-100" action="/vendedores/eliminar">
                             <input type="hidden" name="id" value="<?= $vendedor->id ?>">
                             <input type="hidden" name="tipo" value="vendedor">
                             <input type="submit" class="boton-rojo-block" value="Eliminar" />
