@@ -33,6 +33,7 @@ class Propiedad extends ActiveRecord
     }
 
     public function validar(){
+        self::$errores = [];
         if (!$this->titulo) {
             self::$errores[] = 'Debes añadir un titulo';
         }

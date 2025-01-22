@@ -17,54 +17,9 @@ function estaAutenticado(): bool
   }
   return true;
 }
-// Imprime los arreglos mas bonitos
-function prettyPrint($mensaje, $modo = 0)
-{
-  if ($modo == 0) {
-    echo "<pre style='background-color: #000; color: #fff;'>";
-    var_export($mensaje);
-    echo "</pre>";
-  } else {
-    echo "<pre>";
-    var_dump($mensaje);
-    echo "</pre>";
-  }
 
 
-  //Imprimir array en la consola
-  $object = json_encode($mensaje);
-  print_r('<script>console.log(' . $object . ')</script>');
-}
 
-function dump($mensaje, $modo = 0)
-{
-  if ($modo == 0) {
-    echo "<pre style='background-color: #000; color: #fff;'>";
-    var_dump($mensaje);
-    echo "</pre>";
-    exit();
-  } else {
-    echo "<pre>";
-    var_dump($mensaje);
-    echo "</pre>";
-    exit();
-  }
-
-  //Imprimir array en la consola
-  $object = json_encode($mensaje);
-  print_r('<script>console.log(' . $object . ')</script>');
-}
-
-/**
- * Sanitizar el HTML
- * @param string $string Texto a sanitizar
- * @return string String sanitizado
- */
-function s($string): string
-{
-  $stringSanitisado = htmlspecialchars($string);
-  return $stringSanitisado;
-}
 
 function truncate(string $texto, int $cantidad): string
 {

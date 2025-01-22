@@ -2,9 +2,13 @@
 
 namespace Controllers;
 
+use Helpers\Request;
 use Model\Propiedad;
 use Model\Vendedor;
 use MVC\Router;
+
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager as Image;
 
 class PropiedadController
 {
@@ -13,20 +17,60 @@ class PropiedadController
     {
         $propiedades = Propiedad::all();
         $vendedores = Vendedor::all();
-        $mensaje = null;
-        $router->render("propiedades/admin", compact('propiedades','vendedores','mensaje'));
+
+         //Mostrar mensaje condicional
+         $resultado = $_GET["resultado"] ?? null;
+         $mensaje = mostrarNotificacion(intval($resultado));
+
+        $router->render("propiedades/admin", compact('propiedades', 'vendedores', 'mensaje'));
     }
 
     public static function  create(Router $router)
-    {   
+    {
         $vendedores = Vendedor::all();
         $propiedad = new Propiedad;
-        $router->render("propiedades/crear",compact('vendedores','propiedad'));
+        $errores = Propiedad::getErrores();       
+
+        if (Request::isMethod('post')) {
+            $propiedad = new Propiedad($_POST['propiedad']);
+
+            //Generar nombre unico
+            $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
+            if ($_FILES['propiedad']['tmp_name']['imagen']) {
+                $manager = new Image(Driver::class);
+                $imagen = $manager->read($_FILES['propiedad']['tmp_name']['imagen'])->cover(800, 600);
+                $propiedad->setImagen($nombreImagen);
+            }
+            $errores = $propiedad->validar();
+            if (empty($errores)) {
+
+                //SUBIDA DE ARCHIVOS
+                //Crear carpeta
+                if (!is_dir(public_path('imagenes'))) {
+                    mkdir(public_path('imagenes'));
+                }
+
+                //Guardar la imagen el servidor
+                if ($_FILES['propiedad']['tmp_name']['imagen']) {
+                    $imagen->save(public_path("imagenes/{$nombreImagen}"));
+                }
+
+                $resultado = $propiedad->guardar();
+
+                if ($resultado) {
+                    //Redireccionar al usuario
+                    header('Location: /admin?resultado=1');
+                }
+            }
+        }
+
+        $router->render(
+            "propiedades/crear",
+            compact('vendedores', 'propiedad', 'errores')
+        );
     }
 
-    public static function store(Router $router){
-        echo "Crear propiedad";
-    }
+
 
     public static function  update()
     {
