@@ -16,7 +16,19 @@ class VendedorController
 
         if (Request::isMethod('post')) {
             $vendedor = new Vendedor($_POST['vendedor']);
+
+            //Validar que no exista ningun campo vacio
             $errores = $vendedor->validar();
+        
+        
+            //No hay errores
+            if(empty($errores)){
+                $resultado = $vendedor->guardar();
+                if($resultado){
+                    redirect('/admin?resultado=1');
+                }
+                
+            }
         }
         
         $router->render("vendedores/crear", compact('vendedor', 'errores'));
