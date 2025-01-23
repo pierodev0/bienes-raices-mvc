@@ -48,6 +48,7 @@ class PaginasController
 
     public static function contacto(Router $router)
     {
+        $mensaje = null;
         if (Request::isMethod('post')) {
             $respuestas = $_POST['contacto'];
             //Crea una instacia de  PHPMailer         
@@ -63,7 +64,7 @@ class PaginasController
 
             //Configurar el contenido del mail
             $mail->setFrom('admin@bienesraices.com');
-            $mail->addAddress('admin@bienesraices.com',"BienesRaices.com");
+            $mail->addAddress('admin@bienesraices.com', "BienesRaices.com");
             $mail->Subject = "Tienes un Nuevo Mensaje";
 
             //Habiliar HTML
@@ -76,23 +77,29 @@ class PaginasController
             $contenido .= "<p>Mensaje: {$respuestas['mensaje']}</p>";
             $contenido .= "<p>Vende o Compra: {$respuestas['tipo']}</p>";
             $contenido .= "<p>Precio o Presupuesto: {$respuestas['precio']}</p>";
-            $contenido .= "<p>Fecha de Contacto: {$respuestas['fecha']}</p>";
-            $contenido .= "<p>Hora de Contacto: {$respuestas['hora']}</p>";
+
             $contenido .= "<p>Forma de Contacto: ";
-            $contenido .= ($respuestas['contacto'] === 'telefono') ? 'Tel fon' : 'E-mail';
+            $contenido .= ($respuestas['contacto'] === 'telefono') ? 'Teléfono' : 'E-mail';
             $contenido .= "</p>";
+            if ($respuestas['contacto'] === 'telefono') {
+                $contenido .= "<p>Telefono: {$respuestas['telefono']}</p>";
+                $contenido .= "<p>Fecha de Contacto: {$respuestas['fecha']}</p>";
+                $contenido .= "<p>Hora de Contacto: {$respuestas['hora']}</p>";
+            } else {
+                $contenido .= "<p>Email: {$respuestas['email']}</p>";
+            }
             $contenido .= "</html>";
 
             $mail->Body = $contenido;
             $mail->AltBody = 'Esto es texto alternativo sin HTML';
 
             //Enviar el email
-            if($mail->send()){
-                echo "Mensaje Enviado Correctamente";
+            if ($mail->send()) {
+                $mensaje = "Mensaje Enviado Correctamente";
             } else {
-                echo "El mensaje no se pudo enviar";
+               $mensaje =   "El mensaje no se pudo enviar";
             }
         }
-        $router->render("paginas/contacto");
+        $router->render("paginas/contacto",compact('mensaje'));
     }
 }
