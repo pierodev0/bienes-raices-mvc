@@ -2,9 +2,10 @@
 
 namespace Controllers;
 
+use Helpers\Request;
 use Model\Propiedad;
-use Model\Vendedor;
 use MVC\Router;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class PaginasController
 {
@@ -12,10 +13,8 @@ class PaginasController
     {
         $inicio = true;
         $propiedades = Propiedad::get(3);
-        $router->render("paginas/index",compact('propiedades','inicio'));
+        $router->render("paginas/index", compact('propiedades', 'inicio'));
     }
-
-
 
     public static function nosotros(Router $router)
     {
@@ -25,15 +24,15 @@ class PaginasController
     public static function propiedades(Router $router)
     {
         $propiedades = Propiedad::all();
-        $router->render("paginas/propiedades",compact('propiedades'));
+        $router->render("paginas/propiedades", compact('propiedades'));
     }
     public static function propiedad(Router $router)
     {
         $id = validarORedireccionar($_GET['id'], '/anuncios');
         $propiedad = Propiedad::find($id);
-        if(!$propiedad) redirect('/anuncios');
+        if (!$propiedad) redirect('/anuncios');
 
-        $router->render("paginas/propiedad",compact('propiedad'));
+        $router->render("paginas/propiedad", compact('propiedad'));
     }
 
 
@@ -49,6 +48,39 @@ class PaginasController
 
     public static function contacto(Router $router)
     {
-        echo "Desde contacto";
+        if (Request::isMethod('post')) {
+            //Crea una instacia de  PHPMailer         
+            $mail = new PHPMailer();
+
+            $mail->isSMTP();
+            $mail->Host = 'sandbox.smtp.mailtrap.io';
+            $mail->SMTPAuth = true;
+            $mail->Port = 2525;
+            $mail->Username = '74c2e6df004524';
+            $mail->Password = '3ca3ef1deae8bc';
+            $mail->SMTPSecure = 'tls';
+
+            //Configurar el contenido del mail
+            $mail->setFrom('admin@bienesraices.com');
+            $mail->addAddress('admin@bienesraices.com',"BienesRaices.com");
+            $mail->Subject = "Tienes un Nuevo Mensaje";
+
+            //Habiliar HTML
+            $mail->isHTML(true);
+            $mail->CharSet = 'UTF-8';
+
+            //Definir el contenido
+            $contenido = '<html><p>Tienes un Nuevo Mensaje</p></html>';
+            $mail->Body = $contenido;
+            $mail->AltBody = 'Esto es texto alternativo sin HTML';
+
+            //Enviar el email
+            if($mail->send()){
+                echo "Mensaje Enviado Correctamente";
+            } else {
+                echo "El mensaje no se pudo enviar";
+            }
+        }
+        $router->render("paginas/contacto");
     }
 }
