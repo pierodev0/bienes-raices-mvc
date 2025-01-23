@@ -20,6 +20,15 @@ class Router
 
    public function comprobarRutas()
    {
+      if (!isset($_SESSION)) {
+         session_start();
+      }
+      
+      $auth = $_SESSION['login'] ?? false;
+
+      //Arreglo de rutas protegidas;
+      $rutas_protegidas = ['/admin', '/propiedades/crear', '/propiedades/actualizar', '/propiedades/eliminar', '/vendedores/crear', '/vendedores/actualizar', '/vendedores/eliminar'];
+
       $urlActual =  $_SERVER['REQUEST_URI'] ?? '/';
       $metodo = $_SERVER['REQUEST_METHOD'];
 
@@ -31,8 +40,12 @@ class Router
          $fn = $this->rutasPOST[$urlActual] ?? null;
       }
 
+      if (in_array($urlActual, $rutas_protegidas) && !$auth) {
+         redirect('/login');
+      }
+
       if ($fn) {
-         if(is_callable($fn)) {
+         if (is_callable($fn)) {
             call_user_func($fn, $this);
          } else {
             echo "No existe el metodo " . $fn[1] . " en el controlador : " . $fn[0];
@@ -43,7 +56,7 @@ class Router
    }
 
    //Mostra una vista
-   public function render($view,$datos = [])
+   public function render($view, $datos = [])
    {
       foreach ($datos as $key => $value) {
          $$key = $value;
