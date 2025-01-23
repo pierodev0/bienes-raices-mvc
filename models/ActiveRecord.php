@@ -144,6 +144,18 @@ class ActiveRecord
         return array_shift($resultado);
     }
 
+    public static function where($column,$value)
+    {
+        $tabla = static::$tabla;
+        
+        $column = self::$db->escape_string($column);
+        $value = self::$db->escape_string($value);
+
+        $query = "SELECT * FROM {$tabla} WHERE {$column} = '{$value}'";
+        $resultado = self::consultarSQL($query);
+        return array_shift($resultado);
+    }
+
     public function eliminar()
     {
         $id = self::$db->escape_string($this->id);

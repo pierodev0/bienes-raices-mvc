@@ -1,4 +1,5 @@
 <?php
+
 namespace Model;
 
 class Admin extends ActiveRecord
@@ -29,4 +30,39 @@ class Admin extends ActiveRecord
         }
         return self::$errores;
     }
+
+
+    public function existeUsuario()
+    {
+
+        $resultado = self::where('email', $this->email);
+
+        if (!$resultado) {
+            self::$errores[] = "El usuario no existe";
+            return;
+        }
+
+        return $resultado;
+    }
+
+    public function comprobarPassword($resultado)
+    {
+        $autenticado =  password_verify($this->password, $resultado->password);
+
+        if (!$autenticado) {
+            self::$errores[] = "El password es incorrecto";
+        }
+        return  $autenticado;
+    }
+
+
+    public function autenticar()
+    {
+        session_start();
+        $_SESSION['usuario'] = $this->email;
+        $_SESSION['login'] = true;
+    }
+
+
+   
 }
