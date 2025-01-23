@@ -40,7 +40,7 @@ if($_SERVER['SCRIPT_NAME'] === '/anuncios.php') {
                     </li>
                 </ul>
 
-                <a href="anuncio.php?id=<?= $propiedad->id ?>" class="boton-amarillo-block">
+                <a href="propiedad?id=<?= $propiedad->id ?>" class="boton-amarillo-block">
                     Ver Propiedad
                 </a>
             </div><!--.contenido-anuncio-->

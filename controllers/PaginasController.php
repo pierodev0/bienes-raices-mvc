@@ -29,7 +29,11 @@ class PaginasController
     }
     public static function propiedad(Router $router)
     {
-        echo "Desde propiedad";
+        $id = validarORedireccionar($_GET['id'], '/anuncios');
+        $propiedad = Propiedad::find($id);
+        if(!$propiedad) redirect('/anuncios');
+
+        $router->render("paginas/propiedad",compact('propiedad'));
     }
 
 

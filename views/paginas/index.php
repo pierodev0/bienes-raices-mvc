@@ -27,7 +27,7 @@
     <?php
         include __DIR__ . "/listado.php" ?>
     <div class="alinear-derecha">
-        <a href="anuncios.php" class="boton-verde">Ver Todas</a>
+        <a href="/anuncios" class="boton-verde">Ver Todas</a>
     </div>
 </section>
 
