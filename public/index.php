@@ -1,5 +1,6 @@
 <?php
 
+use Controllers\LoginController;
 use Controllers\PaginasController;
 use Controllers\PropiedadController;
 use Controllers\VendedorController;
@@ -25,7 +26,7 @@ $router->get("/vendedores/actualizar",[VendedorController::class,'update']);
 $router->post("/vendedores/actualizar",[VendedorController::class,'update']);
 $router->post("/vendedores/eliminar",[VendedorController::class,'delete']);
 
-//Zona public
+//Zona publica
 $router->get("/",[PaginasController::class,'index']);
 $router->get("/nosotros",[PaginasController::class,'nosotros']);
 $router->get("/anuncios",[PaginasController::class,'propiedades']);
@@ -34,6 +35,11 @@ $router->get("/blog",[PaginasController::class,'blog']);
 $router->get("/entrada",[PaginasController::class,'entrada']);
 $router->get("/contacto",[PaginasController::class,'contacto']);
 $router->post("/contacto",[PaginasController::class,'contacto']);
+
+//Login y autenticacion de usuarios
+$router->get("/login",[LoginController::class,'login']);
+$router->post("/login",[LoginController::class,'login']);
+$router->get("/logout",[LoginController::class,'logout']);
 
 
 $router->comprobarRutas();
