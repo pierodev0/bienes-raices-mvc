@@ -102,4 +102,10 @@ class PaginasController
         }
         $router->render("paginas/contacto",compact('mensaje'));
     }
+
+
+    public static function notFound(Router $router)
+    {
+        $router->render("paginas/404");
+    }
 }

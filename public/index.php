@@ -42,4 +42,7 @@ $router->post("/login",[LoginController::class,'login']);
 $router->get("/logout",[LoginController::class,'logout']);
 
 
+//Pagina no encontrada
+$router->get("/not-found",[PaginasController::class,'notFound']);
+
 $router->comprobarRutas();

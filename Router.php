@@ -51,7 +51,7 @@ class Router
             echo "No existe el metodo " . $fn[1] . " en el controlador : " . $fn[0];
          }
       } else {
-         echo "Pagina no encontrada";
+         redirect('/not-found');
       }
    }
 
