@@ -6,6 +6,9 @@
             "email": "pierodev21@gmail.com"
         }
     ],
+    "scripts": {
+        "dev": ["Composer\\Config::disableProcessTimeout","php -S localhost:3000 -t public"]
+    },
     "require": {
         "intervention/image": "^3.11",
         "phpmailer/phpmailer": "^6.9"
